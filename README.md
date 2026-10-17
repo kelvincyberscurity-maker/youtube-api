@@ -63,3 +63,7 @@ The API also accepts GET requests so you can start a download by opening a URL i
 - Audio/video metadata: append `&getInfo=true`
 
 If the YouTube URL contains its own query parameters (such as `?si=...`), encode the entire YouTube URL in the `url` parameter. For example, use JavaScript `encodeURIComponent(youtubeUrl)` when generating links. GET downloads may still fail for large media because of Vercel serverless limits.
+
+
+## Fix for `env: 'python3': No such file or directory`
+This version downloads the standalone yt-dlp binary to `/tmp` on a cold start, avoiding the Python-script wrapper that requires `python3`. Vercel network access and function duration limits still apply.
