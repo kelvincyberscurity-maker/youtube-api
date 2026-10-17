@@ -52,3 +52,14 @@ Request body uses `videoUrl`, not `url`. For MP4, optional `quality` can be a yt
 This is adapted to Vercel Functions: it uses `/tmp`, unique temporary filenames, serverless handler exports, and `/api/*` routes instead of starting an Express server. It is **not possible to guarantee every download will work on Vercel**. YouTube may change its extraction flow, bundled downloader/FFmpeg binaries may fail in a deployment environment, and Vercel's function duration, memory, bundle-size, and response-size limits can prevent large or long downloads. For large files or reliable production downloads, use a VPS or external worker/storage service.
 
 Only download videos/audio you own or are authorized to download, and comply with YouTube's terms and applicable law.
+
+
+## Browser-friendly GET endpoints
+
+The API also accepts GET requests so you can start a download by opening a URL in a browser. URL-encode the YouTube URL as the `url` parameter:
+
+- MP3: `/api/audio?url=https%3A%2F%2Fyoutu.be%2FVIDEO_ID`
+- MP4: `/api/youtube?url=https%3A%2F%2Fyoutu.be%2FVIDEO_ID`
+- Audio/video metadata: append `&getInfo=true`
+
+If the YouTube URL contains its own query parameters (such as `?si=...`), encode the entire YouTube URL in the `url` parameter. For example, use JavaScript `encodeURIComponent(youtubeUrl)` when generating links. GET downloads may still fail for large media because of Vercel serverless limits.
